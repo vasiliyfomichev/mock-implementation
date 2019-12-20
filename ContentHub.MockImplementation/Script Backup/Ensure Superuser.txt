@@ -1,0 +1,15 @@
+﻿// Administrator id is 6; excluding the Admin user, as it cannot be modified
+if(Context.User.Id==6){ 
+    return;
+}
+
+var firstName = Context.User.GetPropertyValue("FirstName");
+var lastName = Context.User.GetPropertyValue("LastName");
+MClient.Logger.Info($"{firstName} {lastName} logged in (user id: {Context.User.Id})");
+
+var relation = await Context.User.GetRelationAsync<IChildToManyParentsRelation>("UserGroupToUser");
+if(!relation.Parents.Contains(5)){  // Superusers group Id
+    relation.Parents.Add(5); 
+}
+
+await MClient.Entities.SaveAsync(Context.User);

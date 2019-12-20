@@ -1,0 +1,33 @@
+﻿using System.Linq;
+
+var masterFileRelation = await Context.File.GetRelationAsync<IChildToManyParentsRelation>("MasterFile");
+
+if (!masterFileRelation.Parents.Any() || !masterFileRelation.Parents.Contains(Context.Asset.Id.Value))
+{
+    return;
+}
+
+string ToCsvValue(object source)
+{
+    var str = source.ToString();
+    if (str.Contains(","))
+    {
+        return "\"" + str + "\"";
+    }
+    return str;
+}
+
+var imageIso = await Context.Asset.GetPropertyAsync<ICultureInsensitiveProperty>("ImageISO");
+imageIso.SetValue(Context.MetadataProperties["iso"]?.ToString() ?? string.Empty);
+
+var cameraBrand = await Context.Asset.GetPropertyAsync<ICultureInsensitiveProperty>("CameraBrand");
+cameraBrand.SetValue(Context.MetadataProperties["make"]?.ToString() ?? string.Empty);
+
+var shutterSpeed = await Context.Asset.GetPropertyAsync<ICultureInsensitiveProperty>("ShutterSpeed");
+shutterSpeed.SetValue(Context.MetadataProperties["shutterspeed"]?.ToString() ?? string.Empty);
+
+var aperture = await Context.Asset.GetPropertyAsync<ICultureInsensitiveProperty>("Aperture");
+aperture.SetValue(Context.MetadataProperties["aperture"]?.ToString() ?? string.Empty);
+
+await MClient.Entities.SaveAsync(Context.Asset);
+MClient.Logger.Info($"Saved metadata to asset {Context.Asset.Id}."); 

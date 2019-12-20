@@ -1,0 +1,25 @@
+﻿using Stylelabs.M.Sdk;
+
+
+var entity = Context.Target as IEntity;
+
+MClient.Logger.Info(entity.ToString());
+
+var publicLink = await MClient.EntityFactory.CreateAsync(Constants.PublicLink.DefinitionName).ConfigureAwait(false);
+publicLink.SetPropertyValue(Constants.PublicLink.Resource, "preview");
+
+// Link the public link to the asset
+var assetTopublicLinkRelation = publicLink.GetRelation<IChildRelation>(Constants.PublicLink.AssetToPublicLink);
+assetTopublicLinkRelation.SetIds(new long[] { entity.Id.Value });
+
+// Save the public link
+long publicLinkId = await MClient.Entities.SaveAsync(publicLink);
+var link = await MClient.Entities.GetAsync(publicLinkId);
+var relativeUrl = link.GetPropertyValue<string>("RelativeUrl");
+var versionHash = link.GetPropertyValue<string>("VersionHash");
+var fileName = entity.GetPropertyValue<string>("FileName");
+var completeUrl = $"https://mockimplementation.stylelabsdemo.com/api/public/content/{relativeUrl}?v={versionHash}";
+MClient.Logger.Info($"Public Link {publicLinkId} created.");
+MClient.Logger.Info($"Complete Link {completeUrl} created.");
+Context.PropertyBag.Add("completeUrl", completeUrl);
+Context.PropertyBag.Add("fileName", fileName);
