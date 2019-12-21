@@ -70,6 +70,7 @@ namespace ContentHub.MockImplementation
                 public const string ApprovalDate = "ApprovalDate";
                 public const string Title = "Title";
                 public const string Description = "Description";
+                public const string MarketingDescription = "MarketingDescription";
                 public const string FileName = "FileName";
                 public const string AssetSource = "AssetSource";
             }

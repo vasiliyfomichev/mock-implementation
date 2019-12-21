@@ -20,13 +20,14 @@ namespace ContentHub.MockImplementation
     {
         public string OriginUrl { get; set; }
         public string Description { get; set; }
+        public string MarketingDescription { get; set; }
         public string AssetType { get; set; }
         public string SocialMediaChannel { get; set; }
         public string ContentSecurity { get; set; }
         public string AssetSource { get; set; }
         public string LifecycleStatus { get; set; }
 
-        private static string username = "vasiliy.fomichev@teamone-usa.com";
+        private static string username = "ApiAdmin";
 
         public string Title
         {
@@ -100,6 +101,7 @@ namespace ContentHub.MockImplementation
             asset.SetPropertyValue(Constants.Asset.Properties.Title, importedAsset.Title);
             asset.SetPropertyValue(Constants.Asset.Properties.Description, Constants.DefaultCulture ,importedAsset.Description);
             asset.SetPropertyValue(Constants.Asset.Properties.AssetSource, importedAsset.AssetSource);
+            asset.SetPropertyValue(Constants.Asset.Properties.MarketingDescription, importedAsset.MarketingDescription);
 
             // Link the asset to content repository: standard
             var standardContentRepository = await client.Entities.GetAsync(Constants.ContentRepositories.Standard).ConfigureAwait(false);
