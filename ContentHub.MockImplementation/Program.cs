@@ -18,16 +18,18 @@ namespace ContentHub.MockImplementation
         static void Main(string[] args)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            Console.WriteLine("Import started.");
+            Console.WriteLine("started.");
 
-            var assets = GetAssetsFromFile();
-            foreach (var asset in assets)
-            {
-                Asset.SetupAsset(asset).Wait();
-            }
+            (new RejectionNotification()).SendEmail().Wait();
+
+            //var assets = GetAssetsFromFile();
+            //foreach (var asset in assets)
+            //{
+            //    Asset.SetupAsset(asset).Wait();
+            //}
 
 
-            var link = MConnector.Client.Entities.GetAsync(10878).Result;
+            //var link = MConnector.Client.Entities.GetAsync(10878).Result;
 
             //var user = MConnector.Client.Users.GetUserAsync("TestUser").Result;
 
@@ -39,7 +41,7 @@ namespace ContentHub.MockImplementation
             //MConnector.Client.Entities.SaveAsync(user).Wait();
 
 
-            Console.WriteLine("Import completed.");
+            Console.WriteLine("completed.");
             Console.ReadKey();
         }
 
